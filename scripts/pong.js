@@ -11,8 +11,8 @@ var animate =	window.requestAnimationFrame ||
 var canvas = document.createElement("canvas");
 var width = 600;
 var height = 400;
-canvas.width = width = window.innerWidth;
-canvas.height = height = window.innerHeight;
+canvas.width = width;
+canvas.height = height;
 // grab canvas' context - the object that directly represents the drawing area of the canvas and allows to draw 2D shapes on it.
 var context = canvas.getContext("2d");
 
@@ -29,4 +29,15 @@ function step() {
 	update();
 	render();
 	animate(step);
+}
+
+
+function update() {
+
+}
+
+// render a table game by using the canvas API methods
+function render() {
+	context.fillStyle = "#2c3e50";
+	context.fillRect(0, 0, width, height);
 }
