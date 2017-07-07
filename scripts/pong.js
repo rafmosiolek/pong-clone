@@ -31,8 +31,11 @@ function step() {
 	animate(step);
 }
 
-
 function update() {
+	// player can update the position of its paddle depenging on a keypress event
+	player.update();
+	// computer will try to position its paddle according to the center of the ball (simple AI)
+	computer.update(ball);
 	// animate the ball
 	ball.update(player.paddle, computer.paddle);
 }
@@ -77,6 +80,24 @@ Paddle.prototype.render = function() {
 	context.fillRect(this.x, this.y, this.width, this.height);
 };
 
+Paddle.prototype.move = function(x, y) {
+	this.x += x;
+	this.y += y;
+	this.x_speed = x;
+	this.y_speed = y;
+
+	// all the way to the top
+	if (this.y < 0) {
+		this.y = 0;
+		this.y_speed = 0;
+	}
+	// all the way to the bottom
+	else if (this.y + this.height > 400) {
+		this.y = 400 - this.height;
+		this.y_speed = 0;
+	}
+
+};
 
 // constructor function for the Player object (controls one of the paddles)
 function Player() {
@@ -93,10 +114,49 @@ Player.prototype.render = function() {
 	this.paddle.render();
 };
 
+// Player's paddle controls
+Player.prototype.update = function() {
+	for (var key in controls) {
+		var value = Number(key);
+		// key W or up arrow
+		if(value == 87 || value == 38) {
+			this.paddle.move(0, -4);
+		// key S or down arrow
+		} else if (value == 83 || value == 40) {
+			this.paddle.move(0, 4);
+		} else {
+			this.paddle.move(0, 0);
+		}
+	}
+};
+
+
 Computer.prototype.render = function() {
 	this.paddle.render();
 };
 
+
+Computer.prototype.update = function(ball) {
+	
+	var y_pos = ball.y;
+	// add max speed so player can score a point
+	var diff = -((this.paddle.y + (this.paddle.height / 2)) - y_pos);
+	// max speed to the top
+	if (diff < 0 && diff < -4) {
+		diff = -5;
+	}
+	// max speed to the bottom
+	else if (diff > 0 && diff > 4) {
+		diff = 5;
+	}
+	// edges
+	this.paddle.move(0, diff);
+	if (this.paddle.y < 0) {
+		this.paddle.y = 0;
+	} else if (this.paddle.y + this.paddle.height > 400) {
+		this.paddle.y = 400 - this.paddle.height;
+	}
+};
 
 // constructor function for the Ball object 
 function Ball (x, y) {
@@ -161,21 +221,19 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	}
 };
 
+// Controls
+// create a controls object to keep track of which key is pressed
+var controls = {
 
+};
 
+window.addEventListener("keydown", function(e) {
+	controls[e.keyCode] = true;
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
+window.addEventListener("keyup", function(e){
+	delete controls[e.keyCode];
+});
 
 
 
