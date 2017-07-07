@@ -46,12 +46,20 @@ var ball = new Ball(300, 200);
 function render() {
 	context.fillStyle = "#2c3e50";
 	context.fillRect(0, 0, width, height);
+	
+	context.fillStyle = "white";
+	context.fillRect(299, 0, 5, height);
+
+	context.beginPath();
+	context.arc(300, 200, 50, 2 * Math.PI, false);
+	context.stroke();
+	context.strokeStyle = "white";
+	context.lineWidth = 5;
 
 	player.render();
 	computer.render();
 	ball.render();
 }
-
 
 // constructor function for Paddle object with x,y position, width and height and x,y speed
 function Paddle (x, y, width, height) {
