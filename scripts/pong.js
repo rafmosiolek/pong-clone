@@ -209,42 +209,17 @@ Ball.prototype.update = function(paddle1, paddle2) {
 		if ( bottom_x < (paddle1.x + paddle1.width) && top_x > paddle1.x && bottom_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y) {
 			this.y_speed = 3;
 			this.y_speed += (paddle1.y_speed / 2);
-			this.x += this.x_speed;
+			this.x += this.y_speed;
 		}
 	// hit the computer's paddle
 	} else {
-		if (top_x < (paddle2.x + paddle2.height) && bottom_x > paddle2.x && top_y < (paddle2.y + paddle2.height) && bottom_x > paddle2.x) {
+		if (top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.x && top_y < (paddle2.y + paddle2.height) && bottom_x > paddle2.x) {
 			this.y_speed = -3;
 			this.y_speed += (paddle2.y_speed / 2);
 			this.x += this.y_speed;
 		}
 	}
 };
-
-
-//   if(top_y > 300) {
-//     if(top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y && top_x < (paddle1.x + paddle1.width) && bottom_x > paddle1.x) {
-//       // hit the player's paddle
-//       this.y_speed = -3;
-//       this.x_speed += (paddle1.x_speed / 2);
-//       this.y += this.y_speed;
-//     }
-//   } else {
-//     if(top_y < (paddle2.y + paddle2.height) && bottom_y > paddle2.y && top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.x) {
-//       // hit the computer's paddle
-//       this.y_speed = 3;
-//       this.x_speed += (paddle2.x_speed / 2);
-//       this.y += this.y_speed;
-//     }
-//   }
-// };
-
-
-
-
-
-
-
 
 
 // Controls
