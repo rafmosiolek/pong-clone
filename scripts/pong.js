@@ -33,7 +33,8 @@ function step() {
 
 
 function update() {
-
+	// animate the ball
+	ball.update();
 }
 
 
@@ -105,6 +106,22 @@ Ball.prototype.render = function() {
 	context.fillStyle = "#e74c3c";
 	context.fill();
 };
+
+// add update method to the Ball object that will animate it inside the update function
+Ball.prototype.update = function() {
+	this.x += this.y_speed;
+	this.y += this.x_speed;
+};
+
+
+
+
+
+
+
+
+
+
 
 
 
