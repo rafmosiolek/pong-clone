@@ -34,7 +34,7 @@ function step() {
 
 function update() {
 	// animate the ball
-	ball.update();
+	ball.update(player.paddle, computer.paddle);
 }
 
 
@@ -108,10 +108,57 @@ Ball.prototype.render = function() {
 };
 
 // add update method to the Ball object that will animate it inside the update function
-Ball.prototype.update = function() {
+Ball.prototype.update = function(paddle1, paddle2) {
 	this.x += this.y_speed;
 	this.y += this.x_speed;
+
+	
+	var top_x = this.x - 5;
+	var top_y = this.y - 5;
+	var bottom_x = this.x + 5;
+	var bottom_y = this.y + 5;
+
+	// add AABB collision detection - Axis-aligned minimum Bounding Box
+		// hitting the top wall
+	if (this.y - 5 < 0) {
+		this.y = 5;
+		this.y_speed = -this.y_speed;
+		// hitting the bottom wall
+	} else if (this.y + 5 > 400) {
+		this.y = 395;
+		this.y_speed = -this.y_speed;
+	}
+		// a point was scored
+	if (this.x > 600 || this.x < 0) {
+		this.x_speed = 0;
+		this.y_speed = 3;
+		this.x = 300;
+		this.y = 200;
+	}
+
+	// hit the player's paddle
+	if (top_x < 300) {
+		if (top_x < (paddle1.x + paddle1.width) && bottom_x > paddle1.x && top_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y) {
+			this.x_speed = -3;
+			this.y_speed += (paddle1.y_speed / 2);
+			this.x += this.x_speed;
+		}
+	// hit the computer's paddle
+	} else {
+		if (top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.x && top_y < (paddle2.y + paddle2.height) && bottom_x > paddle1.x) {
+			this.x_speed = 3;
+			this.y_speed += (paddle2.y_speed / 2);
+			this.x += this.x_speed;
+		}
+	}
 };
+
+
+
+
+
+
+
 
 
 
