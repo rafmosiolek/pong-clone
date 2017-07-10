@@ -203,6 +203,11 @@ Ball.prototype.update = function(paddle1, paddle2) {
 		this.y = 200;
 	}
 
+	// AABB determine how much to change the ball speed.
+	// When the ball hits a paddle:
+	// the ball horizontal trajectory reverses
+	// the ball verticall speed increases by half the speed of the paddle.
+
 		if (ballLeft < 300) {
 		var playerPaddleXArea = paddle1.x + paddle1.width;
 		var ballLeftIsBehindPlayersPaddle = ballLeft < playerPaddleXArea;
@@ -216,8 +221,8 @@ Ball.prototype.update = function(paddle1, paddle2) {
 
 		if (ballHitPlayersPaddle) {
 			this.y_speed = 3;
-			this.y_speed += (paddle1.y_speed / 2);
-			this.x += this.y_speed;
+			this.y_speed -= (paddle1.y_speed / 2);
+			this.x -= this.y_speed;
 		}
 	} else {
 		var comPaddleXArea = paddle2.x + paddle2.width;
@@ -235,12 +240,6 @@ Ball.prototype.update = function(paddle1, paddle2) {
 		}
 	}
 
-
-
-	// AABB determine how much to change the ball speed.
-	// When the ball hits a paddle:
-	// the ball horizontal trajectory reverses
-	// the ball verticall speed increases by half the speed of the paddle.
 
 	// if the ball is on the left side of the pitch
 	// if (ballLeft < 300) {
