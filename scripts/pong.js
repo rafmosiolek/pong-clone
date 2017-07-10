@@ -6,7 +6,6 @@ var animate =	window.requestAnimationFrame ||
 					window.setTimeout(callback, 1000/60);
 				};
 
-
 // setup a canvas element
 var canvas = document.createElement("canvas");
 var width = 600;
@@ -180,11 +179,11 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	this.x += this.y_speed;
 	this.y += this.x_speed;
 
-	
-	var top_x = this.x + 5;
-	var top_y = this.y + 5;
-	var bottom_x = this.x - 5;
-	var bottom_y = this.y - 5;
+	// x,y is the center of the ball, radius is 5, so:
+	var ballRight = this.x + 5; // top_x
+	var ballTop = this.y + 5;	// top_y
+	var ballLeft = this.x - 5;	// bottom_x
+	var ballBottom = this.y - 5;	// bottom_y
 
 	// add AABB collision detection - Axis-aligned minimum Bounding Box
 		// hitting the top wall
@@ -205,22 +204,37 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	}
 
 	// hit the player's paddle
-	if (top_x < 300) {
-		if ( bottom_x < (paddle1.x + paddle1.width) && top_x > paddle1.x && bottom_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y) {
+	if (ballRight < 300) {
+		if ( ballLeft < (paddle1.x + paddle1.width) && ballRight > paddle1.x && ballBottom < (paddle1.y + paddle1.height) && ballBottom > paddle1.y) {
 			this.y_speed = 3;
 			this.y_speed += (paddle1.y_speed / 2);
 			this.x += this.y_speed;
 		}
 	// hit the computer's paddle
 	} else {
-		if (top_x < (paddle2.x + paddle2.width) && bottom_x > paddle2.x && top_y < (paddle2.y + paddle2.height) && bottom_x > paddle2.x) {
+		if (ballRight < (paddle2.x + paddle2.height) && ballLeft > paddle2.x && ballTop < (paddle2.y + paddle2.height) && ballLeft > paddle2.x) {
 			this.y_speed = -3;
 			this.y_speed += (paddle2.y_speed / 2);
 			this.x += this.y_speed;
 		}
 	}
 };
-
+/////// partially working \/\/\/\/
+// hit the player's paddle
+	// if (top_x < 300) {
+	// 	if ( bottom_x < (paddle1.x + paddle1.width) && top_x > paddle1.x && bottom_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y) {
+	// 		this.y_speed = 3;
+	// 		this.y_speed += (paddle1.y_speed / 2);
+	// 		this.x += this.y_speed;
+	// 	}
+	// hit the computer's paddle
+	// } else {
+	// 	if (top_x < (paddle2.x + paddle2.height) && bottom_x > paddle2.x && top_y < (paddle2.y + paddle2.height) && bottom_x > paddle2.x) {
+	// 		this.y_speed = -3;
+	// 		this.y_speed += (paddle2.y_speed / 2);
+	// 		this.x += this.y_speed;
+	// 	}
+	// }
 
 // Controls
 // create a controls object to keep track of which key is pressed
