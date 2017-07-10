@@ -203,31 +203,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
 		this.y = 200;
 	}
 
-
-	// AABB determine how much to change the ball speed.
-	// When the ball hits a paddle:
-	// the ball horizontal trajectory reverses
-	// the ball verticall speed increases by half the speed of the paddle.
-
-	// if the ball is on the left side of the pitch
-	if (ballLeft < 300) {
-		// hit the player's paddle
-		if ( (ballLeft < (paddle1.x + paddle1.width)) && (ballRight > paddle1.x) && (ballBottom < (paddle1.y + paddle1.height)) && (ballTop > paddle1.y) ) {
-			this.y_speed = 3;
-			this.y_speed -= (paddle1.y_speed / 2);
-			this.x -= this.y_speed;
-		}
-	// hit the computer's paddle
-	} else {
-		if ( (ballRight < (paddle2.x + paddle2.width)) && (ballLeft > paddle2.x) && (ballTop < (paddle2.y + paddle2.height)) && (ballBottom > paddle2.x) ) {
-			this.y_speed = -3;
-			this.y_speed += (paddle2.y_speed / 2);
-			this.x += this.y_speed;
-		}
-	}
-};	
-
-	if (ballLeft < 300) {
+		if (ballLeft < 300) {
 		var playerPaddleXArea = paddle1.x + paddle1.width;
 		var ballLeftIsBehindPlayersPaddle = ballLeft < playerPaddleXArea;
 		var ballRightIsInFrontPlayersPaddle = ballRight > paddle1.x;
@@ -246,52 +222,46 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	} else {
 		var comPaddleXArea = paddle2.x + paddle2.width;
 		var ballRightIsBehindComPaddle = ballRight > comPaddleXArea;
-		var ballLeftIsBehindComPaddle = ballLeft > paddle2.x;
+		var ballLeftIsInFrontComPaddle = ballLeft < paddle2.x;
 
-		var ballYOverlapsComPaddle = 
+		var ballYOverlapsComPaddle = ballLeft < comPaddleXArea && ballRight > paddle2.x;
+
+		var ballHitComPaddle = ballRightIsBehindComPaddle && ballLeftIsInFrontComPaddle && ballYOverlapsComPaddle;
+
+		if (ballHitComPaddle) {
+			this.y_speed = -3;
+			this.y_speed += (paddle2.y_speed / 2);
+			this.x += this.y_speed;
+		}
 	}
 
-    // if (ballInBottomOfScreen) {
-    	
-    // var top_x = this.x - 5;=== ballLeft
-    // var top_y = this.y - 5; === ballTop
-    // var bottom_x = this.x + 5; === ballRight
-    // var bottom_y = this.y + 5; === ballBottom
-    // var paddleBottom = playerBottom.paddle; === paddle1
-    // var paddleTop = playerTop.paddle; === paddle2
 
-    //     var bottomPaddleYArea = paddleBottom.y + paddleBottom.height; === playerPaddleXArea
-    //     var ballTopIsUnderBottomPaddle = top_y < bottomPaddleYArea; === ballLeftIsBehindPlayersPaddle
-    //     var ballBottomIsAboveBottomPaddle = bottom_y > paddleBottom.y; === ballRightIsInFrontPlayersPaddle
-    //     var ballYOverlapsBottomPaddle = ballTopIsUnderBottomPaddle && ballBottomIsAboveBottomPaddle; === ballXOverlapsPlayersPaddle
 
-    //     var bottomPaddleXArea = paddleBottom.x + paddleBottom.width; === playerPaddleYArea
-    //     var ballXOverlapsBottomPaddle = top_x < bottomPaddleXArea && bottom_x > paddleBottom.x; === ballYOverlapsPlayersPaddle
+	// AABB determine how much to change the ball speed.
+	// When the ball hits a paddle:
+	// the ball horizontal trajectory reverses
+	// the ball verticall speed increases by half the speed of the paddle.
 
-    //     var ballHitBottomPaddle = ballYOverlapsBottomPaddle && ballXOverlapsBottomPaddle;
+	// if the ball is on the left side of the pitch
+	// if (ballLeft < 300) {
+		// hit the player's paddle
+		// if ( (ballLeft < (paddle1.x + paddle1.width)) && (ballRight > paddle1.x) && (ballBottom < (paddle1.y + paddle1.height)) && (ballTop > paddle1.y) ) {
+		// 	this.y_speed = 3;
+		// 	this.y_speed -= (paddle1.y_speed / 2);
+		// 	this.x -= this.y_speed;
+		// }
+	// hit the computer's paddle
+	// } else {
+	// 	if ( (ballRight < (paddle2.x + paddle2.width)) && (ballLeft > paddle2.x) && (ballTop < (paddle2.y + paddle2.height)) && (ballBottom > paddle2.x) ) {
+	// 		this.y_speed = -3;
+	// 		this.y_speed += (paddle2.y_speed / 2);
+	// 		this.x += this.y_speed;
+	// 	}
+	// }
+};	
 
-    //     if (ballHitBottomPaddle) {
-    //         this.y_speed = randomOffset(-(Math.abs(paddleBottom.x_speed || 4)), -0.9 * Math.abs(paddleBottom.x_speed || 4));
-    //         this.x_speed += (paddleBottom.x_speed / 2);
-    //         this.y += this.y_speed;
-    //     }
-    // } else {
-//         var topPaddleBottom = paddleTop.y + paddleTop.height;
-//         var ballTopIsOverTopPaddle = top_y < topPaddleBottom;
-//         var ballBottomIsUnderTopPaddle = bottom_y > paddleTop.y;
-        
-//         var ballXOverlapsTopPaddle = top_x < (paddleTop.x + paddleTop.width) && bottom_x > paddleTop.x;
 
-//         var ballHitTopPaddle = ballTopIsOverTopPaddle && ballBottomIsUnderTopPaddle && ballXOverlapsTopPaddle;
-        
-//         if (ballHitTopPaddle) {
-//             this.y_speed = randomOffset(0.9 * Math.abs(paddleTop.x_speed || 4), Math.abs(paddleTop.x_speed || 4));
-//             this.x_speed += (paddleTop.x_speed / 2);
-//             this.y += this.y_speed;
-//         }
-//     }
-
-// };
+   
 
 /////// partially working \/\/\/\/
 // hit the player's paddle
