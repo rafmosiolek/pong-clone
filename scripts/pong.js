@@ -161,8 +161,8 @@ Computer.prototype.update = function(ball) {
 function Ball (x, y) {
 	this.x = x;
 	this.y = y;
-	this.x_speed = 0;
-	this.y_speed = 3;
+	this.x_speed = 3;
+	this.y_speed = 0;
 	this.radius = 5;
 }
 
@@ -176,8 +176,8 @@ Ball.prototype.render = function() {
 
 // add update method to the Ball object that will animate it inside the update function
 Ball.prototype.update = function(paddle1, paddle2) {
-	this.x -= this.y_speed;
-	this.y -= this.x_speed;
+	this.x += this.x_speed;
+	this.y += this.y_speed;
 
 	// x,y is the center of the ball, radius is 5, so:
 	var ballRight = this.x + 5; // top_x
@@ -197,8 +197,8 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	}
 		// a point was scored - ball center passed right or left wall
 	if (this.x > 600 || this.x < 0) {
-		this.x_speed = 0;
-		this.y_speed = 3;
+		this.x_speed = 3;
+		this.y_speed = 0;
 		this.x = 300;
 		this.y = 200;
 	}
@@ -208,76 +208,23 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	// the ball horizontal trajectory reverses
 	// the ball verticall speed increases by half the speed of the paddle.
 
-	// if (ballLeft < 300) {
-	// 	var playerPaddleXArea = paddle1.x + paddle1.width;
-	// 	var ballLeftIsBehindPlayersPaddle = ballLeft < playerPaddleXArea;
-	// 	var ballRightIsInFrontPlayersPaddle = ballRight > paddle1.x;
-	// 	var ballXOverlapsPlayersPaddle = ballLeftIsBehindPlayersPaddle && ballRightIsInFrontPlayersPaddle;
-
-	// 	var playerPaddleYArea = paddle1.y + paddle1.height;
-	// 	var ballYOverlapsPlayersPaddle = ballLeft < playerPaddleYArea && ballRight > paddle1.y;
-
-	// 	var ballHitPlayersPaddle = ballXOverlapsPlayersPaddle && ballYOverlapsPlayersPaddle;
-
-	// 	if (ballHitPlayersPaddle) {
-	// 		this.y_speed = -3;
-	// 		this.y_speed += (paddle1.y_speed / 2);
-	// 		this.x += this.y_speed;
-	// 	}
-	// } else {
-	// 	var comPaddleXArea = paddle2.x + paddle2.width;
-	// 	var ballRightIsBehindComPaddle = ballRight > comPaddleXArea;
-	// 	var ballLeftIsInFrontComPaddle = ballLeft < paddle2.x;
-
-	// 	var ballYOverlapsComPaddle = ballLeft < comPaddleXArea && ballRight > paddle2.x;
-
-	// 	var ballHitComPaddle = ballRightIsBehindComPaddle && ballLeftIsInFrontComPaddle && ballYOverlapsComPaddle;
-
-	// 	if (ballHitComPaddle) {
-	// 		this.y_speed = -3;
-	// 		this.y_speed += (paddle2.y_speed / 2);
-	// 		this.x += this.y_speed;
-	// 	}
-	// }
-
-
 	// if the ball is on the left side of the pitch
 	if (ballLeft < 300) {
-		// hit the player's paddle
+		// ball hits the player's paddle
 		if ( (ballLeft < (paddle1.x + paddle1.width)) && (ballRight > paddle1.x) && (ballBottom < (paddle1.y + paddle1.height)) && (ballTop > paddle1.y) ) {
-			this.y_speed = -3;
+			this.x_speed = 3;
 			this.y_speed += (paddle1.y_speed / 2);
-			this.x += this.x_speed;
+			this.y += this.y_speed;
 		}
 	// hit the computer's paddle
 	} else {
-		if ( (ballRight > (paddle2.x + paddle2.width)) && (ballLeft < paddle2.x) && (ballBottom < (paddle2.y + paddle2.height)) && (ballTop > paddle2.x) ) {
-			this.y_speed = -3;
+		if ( (ballLeft < (paddle2.x + paddle2.width)) && (ballRight > paddle2.x) && (ballBottom < (paddle2.y + paddle2.height)) && (ballTop > paddle2.y) ) {
+			this.x_speed = -3;
 			this.y_speed += (paddle2.y_speed / 2);
-			this.x += this.x_speed;
+			this.y += this.y_speed;
 		}
 	}
 };	
-
-
-   
-
-/////// partially working \/\/\/\/
-// hit the player's paddle
-	// if (top_x < 300) {
-	// 	if ( bottom_x < (paddle1.x + paddle1.width) && top_x > paddle1.x && bottom_y < (paddle1.y + paddle1.height) && bottom_y > paddle1.y) {
-	// 		this.y_speed = 3;
-	// 		this.y_speed += (paddle1.y_speed / 2);
-	// 		this.x += this.y_speed;
-	// 	}
-	// hit the computer's paddle
-	// } else {
-	// 	if (top_x < (paddle2.x + paddle2.height) && bottom_x > paddle2.x && top_y < (paddle2.y + paddle2.height) && bottom_x > paddle2.x) {
-	// 		this.y_speed = -3;
-	// 		this.y_speed += (paddle2.y_speed / 2);
-	// 		this.x += this.y_speed;
-	// 	}
-	// }
 
 // Controls
 // create a controls object to keep track of which key is pressed
