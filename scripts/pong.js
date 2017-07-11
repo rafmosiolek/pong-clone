@@ -79,6 +79,7 @@ ScoreBoard.prototype.render = function() {
 function SoundEffects() {
 	this.bounceCom = new Audio("sfx/bounceCom.wav");
 	this.bouncePlayer = new Audio("sfx/bouncePlayer.wav");
+	this.bounceWall = new Audio("sfx/bounceWall.wav");
 	this.score = new Audio("sfx/score.wav");
 }
 
@@ -209,16 +210,20 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	if (this.y - 5 < 0) { 
 		this.y = 5;
 		this.y_speed = -this.y_speed;
+		soundEffects.bounceWall.play();
 		// hitting the bottom wall - ballBottom collides with the bottom wall
 	} else if (this.y + 5 > 400) { 
 		this.y = 395;
 		this.y_speed = -this.y_speed;
+		soundEffects.bounceWall.play();
 	}
 	
 	// COM scored (ball passed left wall)
 	if (this.x < 0) {
 		// add a point to the scoreBoard 
 		scoreBoard.comScore += 1;
+		// play the score sound effect
+		soundEffects.score.play();
 		// reset position of the ball
 		this.x_speed = 3;
 		this.y_speed = 0;
@@ -228,6 +233,8 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	} else if (this.x > 600) {
 		// add a point to the scoreBoard
 		scoreBoard.playerScore += 1;
+		// play the score sound effect
+		soundEffects.score.play();
 		// reset position of the ball
 		this.x_speed = 3;
 		this.y_speed = 0;
@@ -247,6 +254,8 @@ Ball.prototype.update = function(paddle1, paddle2) {
 			this.x_speed = 3;
 			this.y_speed += (paddle1.y_speed / 2);
 			this.y += this.y_speed;
+
+			soundEffects.bouncePlayer.play();
 		}
 	// hit the computer's paddle
 	} else {
@@ -254,6 +263,8 @@ Ball.prototype.update = function(paddle1, paddle2) {
 			this.x_speed = -3;
 			this.y_speed += (paddle2.y_speed / 2);
 			this.y += this.y_speed;
+
+			soundEffects.bounceCom.play();
 		}
 	}
 };	
