@@ -186,16 +186,16 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	var ballTop = this.y - 5;	// bottom_y
 
 	// add AABB collision detection - Axis-aligned minimum Bounding Box
-		// hitting the top wall
-	if (this.y - 5 < 0) {
+		// hitting the top wall - ballTop collides with the top wall
+	if (this.y - 5 < 0) { 
 		this.y = 5;
 		this.y_speed = -this.y_speed;
-		// hitting the bottom wall
-	} else if (this.y + 5 > 400) {
+		// hitting the bottom wall - ballBottom collides with the bottom wall
+	} else if (this.y + 5 > 400) { 
 		this.y = 395;
 		this.y_speed = -this.y_speed;
 	}
-		// a point was scored
+		// a point was scored - ball center passed right or left wall
 	if (this.x > 600 || this.x < 0) {
 		this.x_speed = 0;
 		this.y_speed = 3;
@@ -208,55 +208,55 @@ Ball.prototype.update = function(paddle1, paddle2) {
 	// the ball horizontal trajectory reverses
 	// the ball verticall speed increases by half the speed of the paddle.
 
-		if (ballLeft < 300) {
-		var playerPaddleXArea = paddle1.x + paddle1.width;
-		var ballLeftIsBehindPlayersPaddle = ballLeft < playerPaddleXArea;
-		var ballRightIsInFrontPlayersPaddle = ballRight > paddle1.x;
-		var ballXOverlapsPlayersPaddle = ballLeftIsBehindPlayersPaddle && ballRightIsInFrontPlayersPaddle;
-
-		var playerPaddleYArea = paddle1.y + paddle1.height;
-		var ballYOverlapsPlayersPaddle = ballLeft < playerPaddleYArea && ballRight > paddle1.y;
-
-		var ballHitPlayersPaddle = ballXOverlapsPlayersPaddle && ballYOverlapsPlayersPaddle;
-
-		if (ballHitPlayersPaddle) {
-			this.y_speed = 3;
-			this.y_speed -= (paddle1.y_speed / 2);
-			this.x -= this.y_speed;
-		}
-	} else {
-		var comPaddleXArea = paddle2.x + paddle2.width;
-		var ballRightIsBehindComPaddle = ballRight > comPaddleXArea;
-		var ballLeftIsInFrontComPaddle = ballLeft < paddle2.x;
-
-		var ballYOverlapsComPaddle = ballLeft < comPaddleXArea && ballRight > paddle2.x;
-
-		var ballHitComPaddle = ballRightIsBehindComPaddle && ballLeftIsInFrontComPaddle && ballYOverlapsComPaddle;
-
-		if (ballHitComPaddle) {
-			this.y_speed = -3;
-			this.y_speed += (paddle2.y_speed / 2);
-			this.x += this.y_speed;
-		}
-	}
-
-
-	// if the ball is on the left side of the pitch
 	// if (ballLeft < 300) {
-		// hit the player's paddle
-		// if ( (ballLeft < (paddle1.x + paddle1.width)) && (ballRight > paddle1.x) && (ballBottom < (paddle1.y + paddle1.height)) && (ballTop > paddle1.y) ) {
-		// 	this.y_speed = 3;
-		// 	this.y_speed -= (paddle1.y_speed / 2);
-		// 	this.x -= this.y_speed;
-		// }
-	// hit the computer's paddle
+	// 	var playerPaddleXArea = paddle1.x + paddle1.width;
+	// 	var ballLeftIsBehindPlayersPaddle = ballLeft < playerPaddleXArea;
+	// 	var ballRightIsInFrontPlayersPaddle = ballRight > paddle1.x;
+	// 	var ballXOverlapsPlayersPaddle = ballLeftIsBehindPlayersPaddle && ballRightIsInFrontPlayersPaddle;
+
+	// 	var playerPaddleYArea = paddle1.y + paddle1.height;
+	// 	var ballYOverlapsPlayersPaddle = ballLeft < playerPaddleYArea && ballRight > paddle1.y;
+
+	// 	var ballHitPlayersPaddle = ballXOverlapsPlayersPaddle && ballYOverlapsPlayersPaddle;
+
+	// 	if (ballHitPlayersPaddle) {
+	// 		this.y_speed = -3;
+	// 		this.y_speed += (paddle1.y_speed / 2);
+	// 		this.x += this.y_speed;
+	// 	}
 	// } else {
-	// 	if ( (ballRight < (paddle2.x + paddle2.width)) && (ballLeft > paddle2.x) && (ballTop < (paddle2.y + paddle2.height)) && (ballBottom > paddle2.x) ) {
+	// 	var comPaddleXArea = paddle2.x + paddle2.width;
+	// 	var ballRightIsBehindComPaddle = ballRight > comPaddleXArea;
+	// 	var ballLeftIsInFrontComPaddle = ballLeft < paddle2.x;
+
+	// 	var ballYOverlapsComPaddle = ballLeft < comPaddleXArea && ballRight > paddle2.x;
+
+	// 	var ballHitComPaddle = ballRightIsBehindComPaddle && ballLeftIsInFrontComPaddle && ballYOverlapsComPaddle;
+
+	// 	if (ballHitComPaddle) {
 	// 		this.y_speed = -3;
 	// 		this.y_speed += (paddle2.y_speed / 2);
 	// 		this.x += this.y_speed;
 	// 	}
 	// }
+
+
+	// if the ball is on the left side of the pitch
+	if (ballLeft < 300) {
+		// hit the player's paddle
+		if ( (ballLeft < (paddle1.x + paddle1.width)) && (ballRight > paddle1.x) && (ballBottom < (paddle1.y + paddle1.height)) && (ballTop > paddle1.y) ) {
+			this.y_speed = -3;
+			this.y_speed += (paddle1.y_speed / 2);
+			this.x += this.x_speed;
+		}
+	// hit the computer's paddle
+	} else {
+		if ( (ballRight > (paddle2.x + paddle2.width)) && (ballLeft < paddle2.x) && (ballBottom < (paddle2.y + paddle2.height)) && (ballTop > paddle2.x) ) {
+			this.y_speed = -3;
+			this.y_speed += (paddle2.y_speed / 2);
+			this.x += this.x_speed;
+		}
+	}
 };	
 
 
