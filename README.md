@@ -13,7 +13,8 @@ A computer. Atari 2600 or ZX Spectrum will do (omg look how funny I am)
 
 ## Built with
 
-Vanilla JavaScript 
+Vanilla JavaScript
+
 Sound effects created with [Bfxr](http://www.bfxr.net/)
 
 ## Possible ways of improvement
