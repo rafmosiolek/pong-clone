@@ -43,6 +43,8 @@ function update() {
 var player = new Player();
 var computer = new Computer();
 var ball = new Ball(300, 200);
+var scoreBoard = new ScoreBoard();
+var soundEffects = new SoundEffects();
 
 // render a table game by using the canvas API methods
 function render() {
@@ -61,6 +63,23 @@ function render() {
 	player.render();
 	computer.render();
 	ball.render();
+	scoreBoard.render();
+}
+
+function ScoreBoard() {
+	this.playerScore = 0;
+	this.comScore = 0;
+}
+
+ScoreBoard.prototype.render = function() {
+	context.fillText(("Player: " + this.playerScore), 200, 20);
+	context.fillText(("COM: " + this.comScore), 400, 20);
+};
+
+function SoundEffects() {
+	this.bounceCom = new Audio("sfx/bounceCom.wav");
+	this.bouncePlayer = new Audio("sfx/bouncePlayer.wav");
+	this.score = new Audio("sfx/score.wav");
 }
 
 // constructor function for Paddle object with x,y position, width and height and x,y speed
@@ -195,8 +214,21 @@ Ball.prototype.update = function(paddle1, paddle2) {
 		this.y = 395;
 		this.y_speed = -this.y_speed;
 	}
-		// a point was scored - ball center passed right or left wall
-	if (this.x > 600 || this.x < 0) {
+	
+	// COM scored (ball passed left wall)
+	if (this.x < 0) {
+		// add a point to the scoreBoard 
+		scoreBoard.comScore += 1;
+		// reset position of the ball
+		this.x_speed = 3;
+		this.y_speed = 0;
+		this.x = 300;
+		this.y = 200;
+	// player scored (ball passed right wall)
+	} else if (this.x > 600) {
+		// add a point to the scoreBoard
+		scoreBoard.playerScore += 1;
+		// reset position of the ball
 		this.x_speed = 3;
 		this.y_speed = 0;
 		this.x = 300;
